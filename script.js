@@ -44,6 +44,7 @@ callButtons.forEach(button => {
     });
 });
 
+
 //heart Counts
 
 let heartcounts = 0;
@@ -57,5 +58,51 @@ heartCount.forEach(btn =>{
     })
 })
 
+
 //History
+
+let HistoryData = [];
+
+document.querySelectorAll(".call-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const card = btn.closest(".card");
+        const service = card.querySelector(".service").innerText;
+        const number = card.querySelector(".number").innerText;
+
+        if(StarCounts >= 20){
+            HistoryData.push({
+            name: `${service} (${number})`,
+            date: new Date().toLocaleString()
+        });
+        }
+
+
+        renderHistory();
+    });
+});
+
+// Render history
+function renderHistory() {
+    const HistoryContainer = document.getElementById("history-container");
+    HistoryContainer.innerHTML = "";
+
+    for (const data of HistoryData.slice().reverse()) {
+        const div = document.createElement("div");
+        div.className = "p-3 bg-white rounded-xl mt-3 flex items-center justify-between shadow";
+        div.innerHTML = `
+            <div>
+                <h1 class="font-bold">${data.name}</h1>
+                <p class="text-sm text-gray-500">${data.date}</p>
+            </div>
+            <i class="fa-solid fa-phone text-green-600"></i>
+        `;
+        HistoryContainer.appendChild(div);
+    }
+}
+
+// Clear history
+document.getElementById("clear-history").addEventListener("click", () => {
+    HistoryData = [];
+    renderHistory();
+});
 
